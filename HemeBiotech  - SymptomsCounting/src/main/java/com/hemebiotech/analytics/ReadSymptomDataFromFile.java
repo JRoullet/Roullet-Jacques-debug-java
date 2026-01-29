@@ -40,6 +40,8 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				String line = reader.readLine();
 
 				while (line != null) {
+					// Avoid duplicates
+					line = line.trim();
 					if (!line.isBlank()) {
 						result.add(line);
 					}
