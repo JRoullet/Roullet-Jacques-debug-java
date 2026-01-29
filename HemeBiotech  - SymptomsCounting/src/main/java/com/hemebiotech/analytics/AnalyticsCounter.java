@@ -3,39 +3,61 @@ package com.hemebiotech.analytics;
 import com.hemebiotech.analytics.Interface.ISymptomReader;
 import com.hemebiotech.analytics.Interface.ISymptomWriter;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Main application class.
- * This class reads symptom data from a text file, counts occurrences
- * of specific symptoms, and writes the results to an output file.
+ * Core business logic class responsible for symptom analysis.
+ *
+ * This class provides the operations required to process symptom data:
+ * counting occurrences, sorting results, and delegating input/output
+ * operations to dedicated abstractions.
+ *
+ * It relies only on interfaces to remain loosely coupled from
+ * concrete implementations.
  */
 public class AnalyticsCounter {
 
-	// Dependencies injection of interfaces  => loosely coupled, instead of instances
+	/**
+	 * Reader abstraction used to retrieve raw symptom data.
+	 */
     private final ISymptomReader symptomReader;
+
+	/**
+	 * Writer abstraction used to output processed symptom data.
+	 */
     private final ISymptomWriter symptomWriter;
 
+	/**
+	 * Constructs an AnalyticsCounter with its required dependencies.
+	 *
+	 * @param symptomReader reader used to retrieve symptom data
+	 * @param symptomWriter writer used to persist processed results
+	 */
 	public AnalyticsCounter(ISymptomReader symptomReader, ISymptomWriter symptomWriter) {
         this.symptomReader = symptomReader;
         this.symptomWriter = symptomWriter;
     }
+
 	/**
-	 * Delegate reading to the ISymptomReader
+	 * Retrieves the raw list of symptoms.
+	 * This method delegates the reading responsibility to the ISymptomReader.
+	 *
+	 * @return a list of symptoms, possibly containing duplicates
+	 * @throws IOException if reading fails
 	 */
-	public List<String> getSymptoms(){
+	public List<String> getSymptoms() throws IOException {
 		return symptomReader.getSymptoms();
 	}
 
 	/**
-	 * Counts occurrences of each symptom from the list. Returns an unordered map
-	 * @param symptoms
-	 * @return Map - unordered
+	 * Counts the occurrences of each symptom in the provided list.
+	 *
+	 * @param symptoms list of raw symptoms
+	 * @return an unordered map containing each symptom and its occurrence count
 	 */
 	public Map<String, Integer> countSymptoms(List<String> symptoms){
 		Map<String, Integer> occurrences = new HashMap<>();
@@ -47,47 +69,23 @@ public class AnalyticsCounter {
 	}
 
 	/**
-	 * Returns a new TreeMap containing the symptoms sorted alphabetically by key
+	 * Sorts the symptoms alphabetically.
+	 *
+	 * @param symptoms map of symptoms and their occurrences
+	 * @return a sorted map ordered by symptom name
 	 */
 	public Map<String, Integer> sortSymptoms(Map<String, Integer> symptoms) {
 		return new TreeMap<>(symptoms);
 	}
 
 	/**
-	 * Delegate writing to the ISymptomWriter
+	 * Writes the processed symptom data using the ISymptomWriter.
+	 *
+	 * @param symptoms map of sorted symptoms and their occurrences
+	 * @throws IOException if writing fails
 	 */
 	public void writeSymptoms(Map<String, Integer> symptoms) throws IOException {
 		symptomWriter.writeSymptoms(symptoms);
 	}
 
-
-	/**
-	 * Application entry point.
-	 *
-	 * @param args command-line arguments (not used)
-	 * @throws Exception if an unrecoverable error occurs
-	 */
-	public static void main(String args[]) throws Exception {
-
-		/**
-		 Load the symptoms file from the classpath.
-		 */
-		InputStream is = AnalyticsCounter
-				.class
-				.getClassLoader()
-				.getResourceAsStream("symptoms.txt");
-
-		if (is == null) {
-			throw new IllegalStateException("symptoms.txt not found in classpath");
-		}
-
-		/**
-		 * Read the file line by line and count symptom occurrences.
-		 */
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(is, StandardCharsets.UTF_8)
-		);
-
-		String line = reader.readLine();
-	}
 }

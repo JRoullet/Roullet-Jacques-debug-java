@@ -15,7 +15,7 @@ public class WriteSymptomDataToFile implements ISymptomWriter {
     private final String outputFile;
 
     /**
-     * @param outputFile path to the output file
+     * @param outputFile name of the output file
      */
     public WriteSymptomDataToFile(String outputFile) {
         this.outputFile = outputFile;

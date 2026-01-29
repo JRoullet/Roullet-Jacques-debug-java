@@ -1,5 +1,6 @@
 package com.hemebiotech.analytics.Interface;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,5 +14,5 @@ public interface ISymptomReader {
 	 * Retrieves all symptoms from the data source.
 	 * @return a list of symptom names, possibly containing duplicates
 	 */
-	List<String> getSymptoms();
+	List<String> getSymptoms() throws IOException;
 }

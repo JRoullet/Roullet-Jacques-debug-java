@@ -2,9 +2,8 @@ package com.hemebiotech.analytics;
 
 import com.hemebiotech.analytics.Interface.ISymptomReader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +13,17 @@ import java.util.List;
  */
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
-	private String filepath;
-
 	/**
-	 * Creates a reader for the given file path.
+	 * Creates a reader for the given InputStream.
 	 *
-	 * @param filepath path to the file containing symptom data
+	 * @param is, using InputStream to retrieve data from file containing symptom data
 	 */
-	public ReadSymptomDataFromFile(String filepath) {
-		this.filepath = filepath;
+	private final InputStream is;
+
+	public ReadSymptomDataFromFile(InputStream is) {
+		this.is = is;
 	}
+
 
 	/**
 	 * Reads all symptoms from the file.
@@ -31,12 +31,12 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 	 * @return a list of symptoms read from the file
 	 */
 	@Override
-	public List<String> getSymptoms() {
+	public List<String> getSymptoms() throws IOException {
 		ArrayList<String> result = new ArrayList<>();
 
-		if (filepath != null) {
+		if (is != null) {
 			try {
-				BufferedReader reader = new BufferedReader(new FileReader(filepath));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 				String line = reader.readLine();
 
 				while (line != null) {
@@ -49,7 +49,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				}
 				reader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new IOException("Error while getting symptom data", e);
 			}
 		}
 
