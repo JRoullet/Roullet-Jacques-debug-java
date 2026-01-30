@@ -1,10 +1,13 @@
 package com.hemebiotech.analytics;
 
-import com.hemebiotech.analytics.Interface.ISymptomReader;
-import com.hemebiotech.analytics.Interface.ISymptomWriter;
+import com.hemebiotech.analytics.interfaces.ISymptomReader;
+import com.hemebiotech.analytics.interfaces.ISymptomWriter;
 
 import java.io.InputStream;
 
+/**
+ * Processing orchestration
+ */
 public class Main {
 
     public static void main(String[] args) throws Exception {

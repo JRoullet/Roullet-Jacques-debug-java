@@ -1,6 +1,6 @@
 package com.hemebiotech.analytics;
 
-import com.hemebiotech.analytics.Interface.ISymptomWriter;
+import com.hemebiotech.analytics.interfaces.ISymptomWriter;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -32,9 +32,6 @@ public class WriteSymptomDataToFile implements ISymptomWriter {
             }
         } catch (IOException e) {
             throw new IOException("Error while writing symptom data", e);
-            /**
-             * Ensure closing writer at the right moment
-             */
         } finally {
             // Ensure the BufferedWriter is closed to release the file resource
             if (writer != null) {

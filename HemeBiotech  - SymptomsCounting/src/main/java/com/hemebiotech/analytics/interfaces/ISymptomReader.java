@@ -1,4 +1,4 @@
-package com.hemebiotech.analytics.Interface;
+package com.hemebiotech.analytics.interfaces;
 
 import java.io.IOException;
 import java.util.List;

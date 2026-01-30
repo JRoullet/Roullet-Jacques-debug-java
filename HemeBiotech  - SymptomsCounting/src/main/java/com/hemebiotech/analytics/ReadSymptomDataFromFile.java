@@ -1,6 +1,6 @@
 package com.hemebiotech.analytics;
 
-import com.hemebiotech.analytics.Interface.ISymptomReader;
+import com.hemebiotech.analytics.interfaces.ISymptomReader;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -16,14 +16,13 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 	/**
 	 * Creates a reader for the given InputStream.
 	 *
-	 * @param is, using InputStream to retrieve data from file containing symptom data
+	 * @param is input stream used to read symptom data
 	 */
 	private final InputStream is;
 
 	public ReadSymptomDataFromFile(InputStream is) {
 		this.is = is;
 	}
-
 
 	/**
 	 * Reads all symptoms from the file.
@@ -40,7 +39,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				String line = reader.readLine();
 
 				while (line != null) {
-					// Avoid duplicates
+					// Normalize input and ignore empty lines
 					line = line.trim();
 					if (!line.isBlank()) {
 						result.add(line);
