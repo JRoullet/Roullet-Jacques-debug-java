@@ -1,4 +1,4 @@
-package com.hemebiotech.analytics;
+package com.hemebiotech.analytics.impl;
 
 import com.hemebiotech.analytics.interfaces.ISymptomWriter;
 

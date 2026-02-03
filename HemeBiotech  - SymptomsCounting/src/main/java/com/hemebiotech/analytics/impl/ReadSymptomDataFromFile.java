@@ -1,4 +1,4 @@
-package com.hemebiotech.analytics;
+package com.hemebiotech.analytics.impl;
 
 import com.hemebiotech.analytics.interfaces.ISymptomReader;
 
@@ -51,7 +51,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				throw new IOException("Error while getting symptom data", e);
 			}
 		}
-
+		is.close();
 		return result;
 	}
 }

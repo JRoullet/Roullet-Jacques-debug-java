@@ -1,9 +1,14 @@
 package com.hemebiotech.analytics;
 
+import com.hemebiotech.analytics.impl.ReadSymptomDataFromFile;
+import com.hemebiotech.analytics.impl.WriteSymptomDataToFile;
 import com.hemebiotech.analytics.interfaces.ISymptomReader;
 import com.hemebiotech.analytics.interfaces.ISymptomWriter;
+import com.hemebiotech.analytics.service.AnalyticsCounter;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Processing orchestration
@@ -27,10 +32,11 @@ public class Main {
         AnalyticsCounter counter = new AnalyticsCounter(reader, writer);
 
         // Execute the application workflow
-        counter.writeSymptoms(
-                counter.sortSymptoms(
-                        counter.countSymptoms(
-                                counter.getSymptoms())));
+        // -> Read -> Count -> Sort -> Write
+        List<String> filedSymptoms = counter.getSymptoms();
+        Map<String,Integer> countedSymptoms = counter.countSymptoms(filedSymptoms);
+        Map<String,Integer> sortedSymptoms = counter.sortSymptoms(countedSymptoms);
+        counter.writeSymptoms(sortedSymptoms);
 
         System.out.println("Les symptômes ont été analysés, comptés, ordonnés et inscrits dans le fichier : result.out");
     }

@@ -1,4 +1,4 @@
-package com.hemebiotech.analytics;
+package com.hemebiotech.analytics.service;
 
 import com.hemebiotech.analytics.interfaces.ISymptomReader;
 import com.hemebiotech.analytics.interfaces.ISymptomWriter;
